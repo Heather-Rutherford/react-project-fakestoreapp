@@ -11,7 +11,9 @@ function ProductCard({ product }) {
       />
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{product.title}</h5>
-        <p className="card-text fw-bold">${product.price}</p>
+        <p className="card-text fw-bold">
+          ${product.price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+        </p>
         <Link
           to={`/ProductsDetails/${product.id}`}
           className="btn btn-primary mt-auto"

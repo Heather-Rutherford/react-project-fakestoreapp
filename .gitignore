@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+/src/pages/AddProduct.css
+/src/pages/EditProduct.css
+/src/components/Navbar.css
