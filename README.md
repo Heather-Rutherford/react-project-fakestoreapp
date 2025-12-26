@@ -8,7 +8,7 @@ A backend will not have to be developed. This app will interact with the FakeSto
 
 ## Project URL
 
-The project has been deployed to .
+The project has been deployed to https://react-module-project-fakestoreapp.netlify.app/.
 
 Visit the URL for easy viewing of the project. If desired, the project can be cloned to your local machine using the instructions in the "Installation" instructions.
 
@@ -19,7 +19,7 @@ Visit the URL for easy viewing of the project. If desired, the project can be cl
 
 or
 
-Visit Netlify. The project is deployed to:
+Visit Netlify. The project is deployed to: https://react-module-project-fakestoreapp.netlify.app/
 
 ## Goals of the Project
 
