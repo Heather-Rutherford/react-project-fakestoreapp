@@ -1,31 +1,37 @@
-# React + Vite
+## React Module Project - FakeStoreApp Project Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+In this project, a FakeStore E-Commerce App will be built using React, React Router, and FakeStoreAPI. This app will allow users to view, create, update, and delete products dynamically using API calls. This project reinforces state management, API interactions, React Router for navigation, and component-based architecture.
 
-Currently, two official plugins are available:
+Important Note: FakeStoreAPI is a mock API designed for testing and learning purposes. While it will respond positively to POST, PUT, and DELETE requests (as if the actions were successful), these changes will not actually persist. You’ll still receive a success message and can test how your app handles these interactions, but the data will reset or remain unchanged when you fetch it again.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A backend will not have to be developed. This app will interact with the FakeStoreApp external API solely for practice with front-end API integration.
 
-## Project Structure
+## Project URL
 
-src/
-│── components/
-│ ├── Navbar.jsx
-│ ├── ProductCard.jsx
-│
-│── pages/
-│ ├── Home.jsx
-│ ├── ProductDetails.jsx
-│ ├── Cart.jsx
-│
-│── App.jsx
-│── main.jsx
+The project has been deployed to .
 
-## React Compiler
+Visit the URL for easy viewing of the project. If desired, the project can be cloned to your local machine using the instructions in the "Installation" instructions.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installation
 
-## Expanding the ESLint configuration
+1. Run git clone https://github.com/Heather-Rutherford/react-project-fakestoreapp.git
+2. Navigate to and open the index.html in a web browser.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+or
+
+Visit Netlify. The project is deployed to:
+
+## Goals of the Project
+
+By the end of this project, you should be able to:
+
+✅ Organize and structure a React application with reusable components.
+✅ Manage state using useState.
+✅ Fetch, create, update, and delete products using Axios or Fetch API.
+✅ Implement React Router for multi-page navigation.
+✅ Apply React Bootstrap for UI styling and responsiveness.
+✅ Handle loading states, errors, and API responses effectively.
+
+## License
+
+N/A

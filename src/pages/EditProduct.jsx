@@ -6,13 +6,14 @@
 
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AddEditCard from "../components/AddEditCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import "../styles/styles.css";
 
 function EditProduct() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -112,6 +113,7 @@ function EditProduct() {
       })
       .then(() => {
         setSuccess("Product updated successfully!");
+        setTimeout(() => navigate("/ProductListing"), 1000);
       })
       .catch((err) => {
         setError(err.message);

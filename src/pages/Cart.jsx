@@ -53,6 +53,9 @@ function Cart({ cartId }) {
   }, [cartId]);
 
   const handleRemoveFromCart = useCallback((id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
+      return;
+    }
     setProducts((prev) => prev.filter((item) => item.id !== id));
   }, []);
 
@@ -82,17 +85,21 @@ function Cart({ cartId }) {
         <EmptyCart />
       ) : (
         <>
-          <ul className="list-cart">
-            {products.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onUpdateQuantity={handleUpdateQuantity}
-                onRemove={handleRemoveFromCart}
-              />
-            ))}
-          </ul>
-          <CartSummary products={products} />
+          <div className="items-in-cart mb-3">
+            <ul className="list-cart">
+              {products.map((item) => (
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  onRemove={handleRemoveFromCart}
+                />
+              ))}
+            </ul>
+          </div>
+          <div className="cart-summary">
+            <CartSummary products={products} />
+          </div>
         </>
       )}
     </div>

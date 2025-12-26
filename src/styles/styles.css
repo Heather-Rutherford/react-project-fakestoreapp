@@ -1,59 +1,70 @@
 /* Filename - Styles.css */
-/* It contains the Form and Page Styling*/
+/* Global styles for forms, pages, and components */
 
+/* ========================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ======================================== */
+:root {
+  --color-white: #fff;
+  --color-light-gray: #ddd;
+  --color-medium-gray: #888;
+  --color-dark-gray: #333;
+  --color-bg-gray: #f0f0f0;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 10px;
+  --spacing-lg: 20px;
+  --spacing-xl: 25px;
+
+  --border-radius-sm: 4px;
+  --border-radius-md: 15px;
+
+  --shadow-default: 0 0 20px rgba(0, 0, 0, 0.2);
+  --border-default: 1px solid var(--color-light-gray);
+}
+
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
 .App {
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  padding: 10px 20px;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-default);
+  padding: var(--spacing-md) var(--spacing-lg);
   transition: transform 0.2s;
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   text-align: center;
-  margin: auto;
-  margin-top: 20px;
+  margin: var(--spacing-lg) auto;
 }
 
 fieldset {
   border: none;
 }
 
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-light-gray);
+}
+
+/* ========================================
+   BUTTONS & CONTROLS
+   ======================================== */
 .button-group {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.navbar-brand {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ddd;
-}
-
-.list-cart {
-  list-style-type: none; /* Removes bullets or numbers */
-  margin: 0; /* Removes default margin */
-  padding: 0; /* Removes default padding */
-}
-
-/* Optional: style list items */
-.list-cart li {
-  padding: 8px;
-  background-color: #f0f0f0;
-  margin-bottom: 4px;
-  border-radius: 4px;
+  justify-content: flex-start;
+  gap: var(--spacing-md);
 }
 
 .quantity-control {
-  /* Container for quantity increase/decrease buttons */
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.cart-summary {
-  /* Cart summary section styling */
-  margin-top: 20px;
-  font-weight: bold;
+  gap: var(--spacing-md);
 }
 
 .cart-item {
@@ -61,26 +72,90 @@ fieldset {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-bottom: var(--border-default);
 }
 
 .cart-item-buttons {
   /* Button container within cart items */
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-right: var(--spacing-lg);
 }
 
-.label {
-  /* Custom label styling (used in AddEditCard form) */
+.cart-item-price {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-top: var(--spacing-lg);
+  margin-right: var(--spacing-xl);
+}
+
+.cart-summary {
+  /* Cart summary section styling */
+  text-align: right;
+  margin-top: var(--spacing-lg);
+  margin-right: var(--spacing-xl);
   font-weight: bold;
-  color: #333;
 }
 
 .empty-cart {
   /* Styling for empty cart message */
   text-align: center;
-  color: #888;
+  color: var(--color-medium-gray);
   font-style: italic;
-  margin-top: 20px;
+  margin-top: var(--spacing-lg);
+}
+
+/* ========================================
+   FORM STYLES
+   ======================================== */
+.label {
+  font-weight: bold;
+  color: var(--color-dark-gray);
+}
+
+/* ========================================
+   PRODUCT STYLES
+   ======================================== */
+.product-title {
+  text-align: left;
+  font-weight: bold;
+  flex: 1;
+  margin: 0;
+}
+
+.product-detail-image {
+  height: 300px;
+  object-fit: contain;
+  max-width: 100%;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 768px) {
+  .App {
+    max-width: 100%;
+    margin: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .cart-item-price {
+    margin-right: 0;
+  }
 }
