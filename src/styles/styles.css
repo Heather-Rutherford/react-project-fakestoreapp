@@ -1,10 +1,6 @@
 /* Filename - Styles.css */
-/* It containds the Form and Page Styling*/
+/* It contains the Form and Page Styling*/
 
-body {
-  background: #f3f3f3;
-  text-align: center;
-}
 .App {
   background-color: #fff;
   border-radius: 15px;
@@ -17,79 +13,14 @@ body {
   margin-top: 20px;
 }
 
-h1 {
-  font-size: x-large;
-  text-align: center;
-  color: #327c35;
-}
-
 fieldset {
   border: none;
-}
-
-input {
-  display: block;
-  width: 100%;
-  /* margin-bottom: 15px; */
-  padding: 8px;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  font-size: 12px;
-}
-input[type="radio"],
-input[type="checkbox"] {
-  display: inline;
-  width: 10%;
-}
-select {
-  display: block;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-label {
-  font-size: 15px;
-  display: block;
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 5px;
-  text-align: left;
-  color: #555;
-  font-weight: bold;
 }
 
 .button-group {
   display: flex;
   justify-content: center;
   gap: 10px;
-}
-
-button {
-  padding: 5px;
-  border-radius: 5%;
-  margin: 15px;
-  border: black;
-  color: black;
-  cursor: pointer;
-  background-color: #ddd;
-  width: 40%;
-  font-size: 16px;
-}
-
-.button-group button:hover {
-  background-color: #ccc;
-}
-
-textarea {
-  resize: none;
-  width: 98%;
-  min-height: 100px;
-  max-height: 150px;
 }
 
 .navbar-brand {
@@ -110,4 +41,46 @@ textarea {
   background-color: #f0f0f0;
   margin-bottom: 4px;
   border-radius: 4px;
+}
+
+.quantity-control {
+  /* Container for quantity increase/decrease buttons */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-summary {
+  /* Cart summary section styling */
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.cart-item {
+  /* Individual cart item styling */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item-buttons {
+  /* Button container within cart items */
+  display: flex;
+  gap: 5px;
+}
+
+.label {
+  /* Custom label styling (used in AddEditCard form) */
+  font-weight: bold;
+  color: #333;
+}
+
+.empty-cart {
+  /* Styling for empty cart message */
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
 }
