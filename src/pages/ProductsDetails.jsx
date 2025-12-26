@@ -1,15 +1,35 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import LoadingSpinner from "../components/LoadingSpinner";
+import "../styles/styles.css";
 
 function ProductsDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => setProduct(data));
+    const controller = new AbortController();
+    fetch(`https://fakestoreapi.com/products/${id}`, {
+      signal: controller.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        setProduct(data);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          setError("Failed to load product: " + err.message);
+        }
+      })
+      .finally(() => setIsLoading(false));
+    return () => controller.abort();
   }, [id]);
 
   const handleAddToCart = () => {
@@ -19,19 +39,33 @@ function ProductsDetails() {
     cart.push(product);
     // Save back to localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Product added to cart!");
+    setSuccess("Product added to cart!");
   };
 
-  if (!product) return <p className="text-center mt-5">Loading...</p>;
+  const formatPrice = (price) => {
+    return price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  if (error) return <p className="text-center mt-5 text-danger">{error}</p>;
+  if (isLoading) return <LoadingSpinner message="Loading products..." />;
 
   return (
     <div className="container mt-4">
+      {success && (
+        <div className="alert alert-success" role="alert">
+          {success}
+        </div>
+      )}
       <div className="row">
         <div className="col-md-6 text-center">
           <img
             src={product.image}
             alt={product.title}
             style={{ height: "300px", objectFit: "contain" }}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://placehold.co/300";
+            }}
           />
         </div>
         <div className="col-md-6">
@@ -40,10 +74,7 @@ function ProductsDetails() {
           <p>
             <b>Category:</b> {product.category}
           </p>
-          <h4>
-            $
-            {product.price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
-          </h4>
+          <h4>${formatPrice(product.price)}</h4>
           <button className="btn btn-success mt-3" onClick={handleAddToCart}>
             Add to Cart
           </button>
@@ -58,5 +89,7 @@ function ProductsDetails() {
     </div>
   );
 }
+
+ProductsDetails.propTypes = {};
 
 export default ProductsDetails;

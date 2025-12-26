@@ -4,10 +4,12 @@
 // It contains the Form, its Structure
 // and Basic Form Functionalities
 
-import "./Styles.css";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-// import { React, useState } from "react";
+import AddEditCard from "../components/AddEditCard";
+import LoadingSpinner from "../components/LoadingSpinner";
+import "../styles/styles.css";
 
 function EditProduct() {
   const { id } = useParams();
@@ -19,17 +21,33 @@ function EditProduct() {
   const [categories, setCategories] = useState([]);
   const [image, setImage] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch categories from API
-    fetch("https://fakestoreapi.com/products/categories")
+    const controller = new AbortController();
+
+    fetch("https://fakestoreapi.com/products/categories", {
+      signal: controller.signal,
+    })
       .then((res) => res.json())
       .then((data) => setCategories(data))
-      .catch((err) => console.error("Error fetching categories:", err));
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          setError("Error fetching categories: " + err.message);
+        }
+      })
+      .finally(() => setIsLoading(false));
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
+    const controller = new AbortController();
+
+    fetch(`https://fakestoreapi.com/products/${id}`, {
+      signal: controller.signal,
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Server returned ${res.status}`);
@@ -37,7 +55,12 @@ function EditProduct() {
         return res.json();
       })
       .then((data) => setProduct(data))
-      .catch((err) => console.error("Fetch error:", err));
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          setError("Fetch error: " + err.message);
+        }
+      });
+    return () => controller.abort();
   }, [id]);
 
   useEffect(() => {
@@ -52,6 +75,8 @@ function EditProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
 
     let imageData = image;
     if (imageFile) {
@@ -79,91 +104,53 @@ function EditProduct() {
       },
       body: JSON.stringify(updatedProduct),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Product updated:", data);
-        alert("Product updated successfully!");
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server returned ${res.status}`);
+        }
+        return res.json();
       })
-      .catch((err) => console.error(err));
+      .then(() => {
+        setSuccess("Product updated successfully!");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
-  if (!product) return <p className="text-center mt-5">Loading...</p>;
+  if (isLoading || !product)
+    return <LoadingSpinner message="Loading product..." />;
 
   return (
     <div className="container mt-4">
       <h1 className="text-center mb-4">Edit Product</h1>
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            Product Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter product title"
-          />
-
-          <label htmlFor="price" className="form-label">
-            Price
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Enter the product price"
-          />
-
-          <label htmlFor="description" className="form-label">
-            Description
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter a product description"
-          />
-
-          <label htmlFor="category" className="form-label">
-            Category
-          </label>
-          <select
-            className="form-control"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">Select a category</option>
-            {categories.map((category, index) => (
-              <option key={index} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-
-          <label htmlFor="file">Upload Product Image</label>
-          <br />
-          <input
-            type="file"
-            name="file"
-            id="file"
-            onChange={(e) => setImageFile(e.target.files[0])}
-          />
-          <button type="reset">Reset</button>
-          <button type="submit">Submit</button>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
         </div>
-      </form>
+      )}
+      {success && (
+        <div className="alert alert-success" role="alert">
+          {success}
+        </div>
+      )}
+      <AddEditCard
+        title={title}
+        setTitle={setTitle}
+        onSubmit={handleSubmit}
+        price={price}
+        setPrice={setPrice}
+        description={description}
+        setDescription={setDescription}
+        category={category}
+        setCategory={setCategory}
+        categories={categories}
+        setImageFile={setImageFile}
+        isEditMode={true}
+      />
     </div>
   );
 }
 
-// export default EditProduct;
+EditProduct.propTypes = {};
 export default EditProduct;

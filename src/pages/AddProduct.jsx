@@ -4,8 +4,10 @@
 // It contains the Form, its Structure
 // and Basic Form Functionalities
 
-import "./Styles.css";
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import AddEditCard from "../components/AddEditCard";
+import "../styles/styles.css";
 
 function AddProduct() {
   const [title, setTitle] = useState("");
@@ -15,28 +17,30 @@ function AddProduct() {
   const [categories, setCategories] = useState([]);
   const [image, setImage] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
     // Fetch categories from API
-    fetch("https://fakestoreapi.com/products/categories")
+    fetch("https://fakestoreapi.com/products/categories", {
+      signal: controller.signal, // Pass signal to fetch
+    })
       .then((res) => res.json())
       .then((data) => setCategories(data))
-      .catch((err) => console.error("Error fetching categories:", err));
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          setError("Failed to load categories: " + err.message);
+        }
+      });
+
+    return () => controller.abort(); // Cleanup function
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    let imageData = image;
-    if (imageFile) {
-      // Convert image file to base64 string
-      imageData = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(imageFile);
-      });
-    }
+    setError("");
+    setSuccess("");
 
     const newProduct = {
       title,
@@ -57,12 +61,13 @@ function AddProduct() {
         }
         return res.json();
       })
-      .then((data) => {
-        console.log(data);
-        alert("Product added successfully!");
+      .then(() => {
+        setSuccess("Product added successfully!");
         handleReset();
       })
-      .catch((err) => console.error("POST error:", err));
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
   const handleReset = () => {
@@ -76,83 +81,35 @@ function AddProduct() {
 
   return (
     <div className="container mt-4">
-      <h1 className="text-center mb-4">Add New Product</h1>
-      <form>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            Product Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter product title"
-            required
-          />
-          <label htmlFor="price" className="form-label">
-            Price
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Enter the product price"
-            required
-          />
-          <label htmlFor="description" className="form-label">
-            Description
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter a product description"
-            required
-          />
-          <label htmlFor="category" className="form-label">
-            Category
-          </label>
-          <select
-            className="form-control"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">Select a category</option>
-            {categories.map((category, index) => (
-              <option key={index} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="file">Upload Product Image*</label>
-          <input
-            type="file"
-            name="file"
-            id="file"
-            // onChange={(e) => setImageFile(e.target.files[0])}
-            placeholder="Enter Upload File"
-            required
-          />
-          <p />
-          <button type="reset" value="reset" onClick={handleReset}>
-            Reset
-          </button>
-          <button type="submit" value="Submit" onClick={handleSubmit}>
-            Submit
-          </button>
+      <h1 className="text-center mb-4">Add Product</h1>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
         </div>
-      </form>
+      )}
+      {success && (
+        <div className="alert alert-success" role="alert">
+          {success}
+        </div>
+      )}
+      <AddEditCard
+        title={title}
+        setTitle={setTitle}
+        onSubmit={handleSubmit}
+        price={price}
+        setPrice={setPrice}
+        description={description}
+        setDescription={setDescription}
+        category={category}
+        setCategory={setCategory}
+        categories={categories}
+        setImageFile={setImageFile}
+        isEditMode={false}
+      />
     </div>
   );
 }
 
-// export default AddProduct;
+AddProduct.propTypes = {};
+
 export default AddProduct;

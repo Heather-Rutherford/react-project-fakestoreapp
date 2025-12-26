@@ -63,17 +63,28 @@ label {
   font-weight: bold;
 }
 
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 button {
-  padding: 15px;
-  border-radius: 10px;
+  padding: 5px;
+  border-radius: 5%;
   margin: 15px;
-  border: none;
-  color: white;
+  border: black;
+  color: black;
   cursor: pointer;
-  background-color: #4caf50;
+  background-color: #ddd;
   width: 40%;
   font-size: 16px;
 }
+
+.button-group button:hover {
+  background-color: #ccc;
+}
+
 textarea {
   resize: none;
   width: 98%;

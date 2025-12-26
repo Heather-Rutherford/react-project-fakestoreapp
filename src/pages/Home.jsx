@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import ProductCard from "../components/ProductCard";
+import React from "react";
+import "../styles/styles.css";
 
 // Home page component to display list of products
 // Fetches products from Fake Store API and displays them

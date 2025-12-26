@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import LoadingSpinner from "../components/LoadingSpinner";
+import "../styles/styles.css";
 
 // Product Listing page component to display list of products
 // Fetches products from Fake Store API and displays them
@@ -16,12 +18,27 @@ import ProductCard from "../components/ProductCard";
 // Location: src/pages/ProductListing.jsx
 function ProductListing() {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
+    const controller = new AbortController();
+    fetch("https://fakestoreapi.com/products", {
+      signal: controller.signal,
+    })
       .then((res) => res.json())
-      .then((data) => setProducts(data));
+      .then((data) => setProducts(data))
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          setError("Failed to load products: " + err.message);
+        }
+      })
+      .finally(() => setIsLoading(false));
+    return () => controller.abort();
   }, []);
+
+  if (isLoading) return <LoadingSpinner message="Loading products..." />;
+  if (error) return <p className="text-center mt-5 text-danger">{error}</p>;
 
   return (
     <div className="container mt-4">
