@@ -63,7 +63,7 @@ function AddProduct() {
       })
       .then(() => {
         setSuccess("Product added successfully!");
-        handleReset();
+        setTimeout(() => handleReset(), 1500);
       })
       .catch((err) => {
         setError(err.message);
@@ -77,6 +77,8 @@ function AddProduct() {
     setCategory("");
     setImage("");
     setImageFile(null);
+    setSuccess("");
+    setError("");
   };
 
   return (
