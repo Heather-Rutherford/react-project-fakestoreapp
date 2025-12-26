@@ -113,7 +113,7 @@ function EditProduct() {
       })
       .then(() => {
         setSuccess("Product updated successfully!");
-        setTimeout(() => navigate("/ProductListing"), 1000);
+        setTimeout(() => navigate("/ProductListing"), 1500);
       })
       .catch((err) => {
         setError(err.message);
